@@ -5,7 +5,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/creativecurtis/laramyob.svg?style=flat-square)](https://scrutinizer-ci.com/g/creativecurtis/laramyob)
 [![Total Downloads](https://img.shields.io/packagist/dt/creativecurtis/laramyob.svg?style=flat-square)](https://packagist.org/packages/creativecurtis/laramyob)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+A handy Laravel wrapper around MYOB AccountRight v2. This is still in alpha stage and will include breaking changes regularily. Full Readme in progress.
 
 ## Installation
 
@@ -16,10 +16,19 @@ composer require creativecurtis/laramyob
 ```
 
 ## Usage
+ENV requirements:
+
+```
+MYOB_CLIENT_ID=
+MYOB_CLIENT_SECRET=
+MYOB_REDIRECT_URI=myob/login
+MYOB_GRANT_TYPE=authorization_code
+MYOB_SCOPE=CompanyFile
+```
 
 ``` php
-$skeleton = new BeyondCode\Skeleton();
-echo $skeleton->echoPhrase('Hello, BeyondCode!');
+$laramyob = new Creativecurtis\Laramyob\Laramyob;
+echo $laramyob->authenticate()->getCode();
 ```
 
 ### Testing
@@ -43,7 +52,6 @@ If you discover any security related issues, please email lukesimoncurtis@gmail.
 ## Credits
 
 - [Luke Curtis](https://github.com/creativecurtis)
-- [All Contributors](../../contributors)
 
 ## License
 
