@@ -1,4 +1,4 @@
-# Very short description of the package
+# Laramyob - MYOB in Laravel, made easy.
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/creativecurtis/laramyob.svg?style=flat-square)](https://packagist.org/packages/creativecurtis/laramyob)
 [![Build Status](https://img.shields.io/travis/creativecurtis/laramyob/master.svg?style=flat-square)](https://travis-ci.org/creativecurtis/laramyob)
@@ -51,7 +51,7 @@ If you discover any security related issues, please email lukesimoncurtis@gmail.
 
 ## Credits
 
-- [Luke Curtis](https://github.com/creativecurtis)
+- [Luke Curtis](https://github.com/lukecurtis93)
 
 ## License
 
