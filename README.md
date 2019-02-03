@@ -26,9 +26,18 @@ MYOB_GRANT_TYPE=authorization_code
 MYOB_SCOPE=CompanyFile
 ```
 
+Optionally publish the preset configuration to store your MYOB authentication details
+```bash
+php artisan vendor:publish --provider="Creativecurtis\Laramyob\LaramyobServiceProvider" --tag="migrations"
+php artisan migrate
+```
+
 ``` php
 $laramyob = new Creativecurtis\Laramyob\Laramyob;
-echo $laramyob->authenticate()->getCode();
+//Redirect your user to MYOB to authenticate account right v2
+$laramyob->authenticate()->getCode();
+//When the code is returned, get your access token
+$laramyob->authenticate()->getToken();
 ```
 
 ### Testing

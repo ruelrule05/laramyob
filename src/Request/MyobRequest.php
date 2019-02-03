@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 
 class MyobRequest {
 
-    protected $httpConfig;
+    protected $httpConfig = [];
     protected $httpClient;
 
     public function __construct($httpConfig = []) 
@@ -22,7 +22,7 @@ class MyobRequest {
     public function getHttpClient()
     {
         if (is_null($this->httpClient)) {
-            $this->httpClient = new Client($this->httpConfig);
+            $this->httpClient = new Client(['headers' => $this->httpConfig]);
         }
 
         return $this->httpClient;
@@ -50,7 +50,7 @@ class MyobRequest {
      */
     public function sendPostRequest($endpoint, $data) 
     {
-       return $this->getHttpClient()->request('POST', $endpoint, $data);
+        return $this->getHttpClient()->request('POST', $endpoint, $data);
     }
 
     /**
@@ -62,6 +62,7 @@ class MyobRequest {
      */
     public function sendGetRequest($endpoint) 
     {
-       return $this->getHttpClient()->request('GET', $endpoint);
+        return $this->getHttpClient()->request('GET', $endpoint);    
     }
+    
 }
