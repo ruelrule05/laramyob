@@ -61,4 +61,18 @@ abstract class BaseModel {
                          ->sendGetRequest($this->baseurl.$this->endpoint.'/'.$uid);
         return json_decode($response->getBody()->getContents(), true);
     }
+
+    public function whereEmail($value) 
+    {
+        $this->endpoint = $this->endpoint."/?\$filter=Addresses/any(x: x/Email eq '".$value."')";
+        return $this;
+    }
+
+    public function get() 
+    {
+        $response = $this->myobRequest
+                         ->sendGetRequest($this->baseurl.$this->endpoint);
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
 }

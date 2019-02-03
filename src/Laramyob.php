@@ -11,10 +11,12 @@ use Creativecurtis\Laramyob\Models\Configuration\MyobConfiguration;
 class Laramyob
 {
     public $authenticate; 
+    public $myobRequest;
 
     public function __construct() 
     {
-       $this->authenticate = new MyobAuthenticate(new MyobRequest);
+        $this->myobRequest = new MyobRequest;
+        $this->authenticate = new MyobAuthenticate($this->myobRequest);
     }
     
     /**
@@ -40,7 +42,37 @@ class Laramyob
         }
     }
 
-   /**
+    /**
+     * Send a raw GET request
+     *
+     * @return MyobConfiguration || bool,
+     */
+    public function rawGet($endpoint)
+    {        
+        if($this->preflight()) {
+            $response = $this->myobRequest
+                             ->sendGetRequest(MyobConfiguration::first()->company_file_uri.$endpoint);
+
+            return json_decode($response->getBody()->getContents(), true);
+        }
+    }
+
+    /**
+     * Send a raw POST request
+     *
+     * @return MyobConfiguration || bool,
+     */
+    public function rawPost($endpoint, $data)
+    {
+        if($this->preflight()) {
+            $response = $this->myobRequest
+                             ->sendPostRequest(MyobConfiguration::first()->company_file_uri.$endpoint, $data);
+
+            return json_decode($response->getBody()->getContents(), true);
+        }
+    }
+
+    /**
      * Preflight check for any request to see if we need to refresh the token
      *
      * @return MyobConfiguration || bool,

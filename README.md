@@ -26,7 +26,7 @@ MYOB_GRANT_TYPE=authorization_code
 MYOB_SCOPE=CompanyFile
 ```
 
-Optionally publish the preset configuration to store your MYOB authentication details
+Publish the preset configuration to store your MYOB authentication details
 ```bash
 php artisan vendor:publish --provider="Creativecurtis\Laramyob\LaramyobServiceProvider" --tag="migrations"
 php artisan migrate
@@ -53,10 +53,26 @@ $laramyob->authenticate()->saveCompanyFileCredentials([
         'company_file_name' => 'API Sandbox Demo 48',
         'company_file_uri'  => 'https:\/\/ar1.api.myob.com\/accountright\/8bf1611b-1666-4f8f-8b7f-ee4cf4fee2ff'
 ]);
+```
+Once that's completed you'll be able to query the API as you normally would
+```php
 //And now query the API with the supported models (and paginate if supported)
-$laramyob->of(Customer::class)->page(1);
-//Or (if the Model is a paginted model it will stil default to pagination due to MYOB api restraints)
-$laramyob->of(Customer::class)->load();
+$laramyob->of(Customer::class)->page(1); //page 1
+//Or (if the Model is a paginted model it will stil default to pagination due to MYOB api restrictions)
+$laramyob->of(Customer::class)->load(); //page 1
+$laramyob->of(Customer::class)->load(2); //page 2
+
+//You can also load the specified model by UID
+$laramyob->of(Customer::class)->loadByUid('8bf1611b-1666-4f8f-8b7f-ee4cf4fee2ff');
+
+//The customer class also has some helper function (whereEmail)
+$laramyob->of(Customer::class)->whereEmail('lukesimoncurtis@gmail.com')->get();
+```
+
+You can also expose the Raw API for MYOB if appropriate
+```php
+$laramyob->rawGet('/Contact/Employee');
+$laramyob->rawPost('/Contact/Employee', $data);
 ```
 
 ### Testing
