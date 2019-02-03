@@ -19,6 +19,8 @@ class CreateMyobConfigurationsTable extends Migration
             $table->DateTime('expires_at');
             $table->uuid('company_file_guid')->nullable();
             $table->string('company_file_token')->nullable();
+            $table->string('company_file_uri')->nullable();
+            $table->string('company_file_name')->nullable();
             $table->timestamps();
         });
     }

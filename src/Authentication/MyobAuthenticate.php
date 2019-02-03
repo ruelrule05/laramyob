@@ -25,11 +25,24 @@ class MyobAuthenticate {
         $this->myobRequest   = $myobRequest;
     }
 
+    /**
+     * Redirect the user to the authentication point for MYOB
+     *
+     * @return  redirect
+     */
     public function getCode() 
     {
         return redirect('https://secure.myob.com/oauth2/account/authorize?client_id='.$this->client_id.'&redirect_uri='.urlencode($this->redirect_uri).'&response_type=code&scope='.$this->scope_type);
     }
 
+    /**
+     * On redirect from either a refresh or a authorization, store the config
+     *
+     * @param Illuminate\Http\Request $reqest
+     * @param String $grant_type 
+     * @param String $refresh_token
+     * @return MyobConfiguration
+     */
     public function getToken(Request $request = null, $grant_type = 'authorization_code', $refresh_token = null)
     {
         $http_attributes = [
@@ -46,6 +59,7 @@ class MyobAuthenticate {
                 'client_secret' => $this->client_secret
             ],
         ];
+
         $response = $this->myobRequest->sendPostRequest('https://secure.myob.com/oauth2/v1/authorize', $http_attributes);
 
         $response = json_decode($response->getBody()->getContents(), true);
@@ -59,9 +73,29 @@ class MyobAuthenticate {
             
         return $myobConfiguration;
     }
-    
+
+    /**
+     * Refresh the token for the MYOB bearer
+     *
+     * @return MyobConfiguration
+     */
     public function getRefreshToken() 
     {
         return $this->getToken(null, 'refresh_token', MyobConfiguration::first()->refresh_token);
+    }
+
+    /**
+     * Save the admin credentials and test the connection
+     *
+     * @return bool
+     */
+    public function saveCompanyFileCredentials($data) 
+    {
+        return MyobConfiguration::first()->updateOrCreate(['id' => 1], [
+            'company_file_token' => base64_encode($data['username'].':'.$data['password']),
+            'company_file_guid'  => $data['company_file_guid'],
+            'company_file_name'  => $data['company_file_name'],
+            'company_file_uri'   => stripslashes($data['company_file_uri']),
+        ]);
     }
 }
