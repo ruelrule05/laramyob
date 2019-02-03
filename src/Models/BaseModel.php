@@ -29,7 +29,6 @@ abstract class BaseModel {
             $this->baseurl = MyobConfiguration::first()->company_file_uri;
         } else {
             throw MyobConfigurationException::myobConfigurationNotFoundException();
-
         }
         
     }
@@ -53,6 +52,13 @@ abstract class BaseModel {
         $response = $this->myobRequest
                          ->sendGetRequest($this->baseurl.$this->endpoint.'?$top=400&$skip='.$skip);
 
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
+    public function loadByUid($uid)
+    {
+        $response = $this->myobRequest
+                         ->sendGetRequest($this->baseurl.$this->endpoint.'/'.$uid);
         return json_decode($response->getBody()->getContents(), true);
     }
 }
