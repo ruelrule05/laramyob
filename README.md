@@ -15,7 +15,7 @@ You can install the package via composer:
 composer require creativecurtis/laramyob
 ```
 
-## Usage
+## Setup
 ENV requirements:
 
 ```
@@ -31,6 +31,8 @@ Publish the preset configuration to store your MYOB authentication details
 php artisan vendor:publish --provider="Creativecurtis\Laramyob\LaramyobServiceProvider" --tag="migrations"
 php artisan migrate
 ```
+
+You'll now need to authenticate with something like the following:
 
 ``` php
 use Creativecurtis\Laramyob\Laramyob;
@@ -54,6 +56,11 @@ $laramyob->authenticate()->saveCompanyFileCredentials([
         'company_file_uri'  => 'https:\/\/ar1.api.myob.com\/accountright\/8bf1611b-1666-4f8f-8b7f-ee4cf4fee2ff'
 ]);
 ```
+
+## Usage
+
+### Get
+
 Once that's completed you'll be able to query the API as you normally would
 ```php
 //And now query the API with the supported models (and paginate if supported)
@@ -65,6 +72,9 @@ $laramyob->of(Customer::class)->load(2); //page 2
 //You can also load the specified model by UID
 $laramyob->of(Customer::class)->loadByUid('8bf1611b-1666-4f8f-8b7f-ee4cf4fee2ff');
 
+//Or just return the first from a search
+$laramyob->of(TaxCode::class)->whereCode('GST')->first();
+
 //The customer class also has some helper function (whereEmail)
 $laramyob->of(Customer::class)->whereEmail('lukesimoncurtis@gmail.com')->get();
 ```
@@ -73,6 +83,24 @@ You can also expose the Raw API for MYOB if appropriate
 ```php
 $laramyob->rawGet('/Contact/Employee');
 $laramyob->rawPost('/Contact/Employee', $data);
+```
+
+### Post
+Once you're ready to post you can do the following, to, for example, save a Customer
+
+```php
+$taxCode = $this->laramyob->of(TaxCode::class)->whereCode('GST')->first();
+
+$customer = (new Customer)->create([
+    'CompanyName'    => 'Creativecurtis',
+    'LastName'       => 'curtis',
+    'FirstName'      => 'luke',
+    'IsIndividual'   => false,
+    'TaxCode'        => $taxCode['UID'],
+    'FreightTaxCode' => $taxCode['UID']
+])
+
+$laramyob->save($customer);
 ```
 
 ### Testing

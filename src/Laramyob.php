@@ -44,6 +44,19 @@ class Laramyob
     }
 
     /**
+     * Take a model that extends the base model.
+     * And attempt to persist to the database
+     *
+     * @return MyobConfiguration || bool,
+     */
+    public function save($model) 
+    {
+        if($this->preflight()) {
+            return $model->post();
+        }
+    }
+
+    /**
      * Send a raw GET request
      *
      * @return MyobConfiguration || bool,

@@ -31,7 +31,6 @@ abstract class BaseModel {
         } else {
             throw MyobConfigurationException::myobConfigurationNotFoundException();
         }
-        
     }
 
     public function load($page = 1)
@@ -71,11 +70,24 @@ abstract class BaseModel {
         return json_decode($response->getBody()->getContents(), true);
     }
 
+    public function first() 
+    {
+        $response = $this->myobRequest
+                         ->sendGetRequest($this->baseurl.$this->endpoint);
+
+        return json_decode($response->getBody()->getContents(), true)['Items'][0];
+    }
+
     public function post() 
     {
         $response = $this->myobRequest
                          ->sendPostRequest($this->baseurl.$this->endpoint, $this->data);
 
         return json_decode($response->getBody()->getContents(), true);
+    }
+
+    public function create($data) {
+        $this->data = $data;
+        return $this;
     }
 }
