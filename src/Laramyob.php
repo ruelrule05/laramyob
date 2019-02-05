@@ -4,6 +4,7 @@ namespace Creativecurtis\Laramyob;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
+use Creativecurtis\Laramyob\Models\Remote\Myob;
 use Creativecurtis\Laramyob\Request\MyobRequest;
 use Creativecurtis\Laramyob\Authentication\MyobAuthenticate;
 use Creativecurtis\Laramyob\Models\Configuration\MyobConfiguration;
@@ -50,10 +51,8 @@ class Laramyob
     public function rawGet($endpoint)
     {        
         if($this->preflight()) {
-            $response = $this->myobRequest
-                             ->sendGetRequest(MyobConfiguration::first()->company_file_uri.$endpoint);
-
-            return json_decode($response->getBody()->getContents(), true);
+            $myob = new Myob($endpoint, []);
+            return  $myob->get();
         }
     }
 
@@ -65,10 +64,8 @@ class Laramyob
     public function rawPost($endpoint, $data)
     {
         if($this->preflight()) {
-            $response = $this->myobRequest
-                             ->sendPostRequest(MyobConfiguration::first()->company_file_uri.$endpoint, $data);
-
-            return json_decode($response->getBody()->getContents(), true);
+            $myob = new Myob($endpoint, $data);
+            return $myob->post();
         }
     }
 

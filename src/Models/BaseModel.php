@@ -13,7 +13,8 @@ abstract class BaseModel {
     public $baseurl;
     public $paginated = false;
     public $paginationStep = 400;
-
+    public $data;
+    
     public function __construct() 
     {
         if(MyobConfiguration::first()) {
@@ -66,6 +67,14 @@ abstract class BaseModel {
     {
         $response = $this->myobRequest
                          ->sendGetRequest($this->baseurl.$this->endpoint);
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
+    public function post() 
+    {
+        $response = $this->myobRequest
+                         ->sendPostRequest($this->baseurl.$this->endpoint, $this->data);
 
         return json_decode($response->getBody()->getContents(), true);
     }
