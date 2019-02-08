@@ -50,7 +50,10 @@ class MyobRequest {
      */
     public function sendPostRequest($endpoint, $data) 
     {
-        return $this->getHttpClient()->request('POST', $endpoint, $data);
+        return $this->getHttpClient()->post($endpoint, [
+            'headers' => empty($this->httpConfig) ? $data['headers'] : $this->httpConfig,
+            'form_params' => $data['form_params'] ?? $data,
+        ]);
     }
 
     /**

@@ -109,7 +109,7 @@ abstract class BaseModel implements JsonSerializable, ArrayAccess {
      */
     public function offsetExists($offset)
     {
-        return isset($offset);
+        return array_key_exists($offset, $this->data);
     }
 
     /**
@@ -118,7 +118,7 @@ abstract class BaseModel implements JsonSerializable, ArrayAccess {
      */
     public function offsetGet($offset)
     {
-        return $offset;
+        return $this->data[$offset];
     }
 
     /**
@@ -128,7 +128,7 @@ abstract class BaseModel implements JsonSerializable, ArrayAccess {
      */
     public function offsetSet($offset, $value)
     {
-        return $offset = $value;
+        return $this->data[$offset] = $value;
     }
 
     /**
