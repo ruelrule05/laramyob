@@ -2,11 +2,13 @@
 
 namespace Creativecurtis\Laramyob\Models;
 
+use ArrayAccess;
+use JsonSerializable;
 use Creativecurtis\Laramyob\Request\MyobRequest;
 use Creativecurtis\Laramyob\Exceptions\MyobConfigurationException;
 use Creativecurtis\Laramyob\Models\Configuration\MyobConfiguration;
 
-abstract class BaseModel {
+abstract class BaseModel implements JsonSerializable, ArrayAccess {
 
     public $endpoint;
     public $myobRequest;
@@ -89,5 +91,51 @@ abstract class BaseModel {
     public function create($data) {
         $this->data = $data;
         return $this;
+    }
+
+    /**
+     * JSON Encode overload to pull out hidden properties
+     *
+     * @return string
+     */
+    public function jsonSerialize()
+    {
+        return json_encode($this);
+    }
+
+    /**
+     * @param mixed $offset
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        return isset($offset);
+    }
+
+    /**
+     * @param mixed $offset
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $offset;
+    }
+
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     * @return mixed
+     */
+    public function offsetSet($offset, $value)
+    {
+        return $offset = $value;
+    }
+
+    /**
+     * @param mixed $offset
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->data[$offset]);
     }
 }

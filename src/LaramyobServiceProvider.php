@@ -3,6 +3,7 @@
 namespace Creativecurtis\Laramyob;
 
 use Illuminate\Support\ServiceProvider;
+use Creativecurtis\Laramyob\Models\Remote\Contact\Customer;
 
 class LaramyobServiceProvider extends ServiceProvider
 {
