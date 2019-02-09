@@ -113,6 +113,16 @@ $laramyob->save($customer);
 composer test
 ```
 
+### Todo:
+- [x] Create API Auth.
+- [x] Create basic model syntax for retrieving data
+- [x] Implement base model for encodable data
+- [x] Create request class
+- [ ] Clean up request class.
+- [ ] Create get and set for appropriate models instead of current free-for-all
+- [ ] Write tests
+- [ ] Make OAuth2 request class less dependant on request class
+
 ### Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
