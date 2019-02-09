@@ -22,12 +22,12 @@ abstract class BaseModel implements JsonSerializable, ArrayAccess {
         if(MyobConfiguration::first()) {
             $myobConfiguration = MyobConfiguration::first();
             $this->myobRequest = new MyobRequest([
-                'Authorization' => 'Bearer '.$myobConfiguration->access_token,
+                'Authorization'     => 'Bearer '.$myobConfiguration->access_token,
                 'x-myobapi-version' => 'v2',
-                'x-myobapi-key' => config('laramyob.client_id'),
+                'x-myobapi-key'     => config('laramyob.client_id'),
                 'x-myobapi-cftoken' => $myobConfiguration->company_file_token,
-                'Accept' => 'application/json',
-                'Content-Type' =>'application/json',
+                'Accept'            => 'application/json',
+                'Content-Type'      =>'application/json',
             ]);
             $this->baseurl = MyobConfiguration::first()->company_file_uri;
         } else {
