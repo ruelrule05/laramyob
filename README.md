@@ -96,8 +96,12 @@ $customer = (new Customer)->create([
     'LastName'       => 'curtis',
     'FirstName'      => 'luke',
     'IsIndividual'   => false,
-    'TaxCode'        => $taxCode['UID'],
-    'FreightTaxCode' => $taxCode['UID']
+    "TaxCode"        => [
+        "UID" => $taxCode['UID'],
+    ],
+    "FreightTaxCode" => [
+        "UID" => $taxCode['UID'],
+    ],
 ])
 
 $laramyob->save($customer);
